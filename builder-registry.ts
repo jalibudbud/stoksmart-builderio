@@ -1,16 +1,16 @@
-"use client";
-import { builder, Builder } from "@builder.io/react";
+import { type RegisteredComponent } from "@builder.io/sdk-react-nextjs";
 import Counter from "./components/Counter";
 
-builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
-
-Builder.registerComponent(Counter, {
-  name: "Counter",
-  inputs: [
-    {
-      name: "initialCount",
-      type: "number",
-      defaultValue: 0,
-    },
-  ],
-});
+export const customComponents: RegisteredComponent[] = [
+  {
+    component: Counter,
+    name: "Counter",
+    inputs: [
+      {
+        name: "initialCount",
+        type: "number",
+        defaultValue: 0,
+      },
+    ],
+  },
+];

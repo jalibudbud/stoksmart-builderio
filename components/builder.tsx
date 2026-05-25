@@ -1,21 +1,20 @@
 "use client";
-import { ComponentProps } from "react";
-import { BuilderComponent, useIsPreviewing } from "@builder.io/react";
-import { BuilderContent } from "@builder.io/sdk";
-import DefaultErrorPage from "next/error";
-import "../builder-registry";
+import { Content, type BuilderContent } from "@builder.io/sdk-react-nextjs";
+import { customComponents } from "@/builder-registry";
 
-type BuilderPageProps = ComponentProps<typeof BuilderComponent>;
-
-interface BuilderPageProperties
-  extends Omit<BuilderPageProps, "model"> {
+interface BuilderPageProps {
+  content?: BuilderContent | null;
   model: string;
+  apiKey: string;
 }
 
-export function RenderBuilderContent(props: BuilderPageProperties) {
-  const isPreviewing = useIsPreviewing();
-  if (props.content || isPreviewing) {
-    return <BuilderComponent {...props} model={props.model} />;
-  }
-  return <DefaultErrorPage statusCode={404} />;
+export function RenderBuilderContent({ content, model, apiKey }: BuilderPageProps) {
+  return (
+    <Content
+      content={content || undefined}
+      apiKey={apiKey}
+      model={model}
+      customComponents={customComponents}
+    />
+  );
 }

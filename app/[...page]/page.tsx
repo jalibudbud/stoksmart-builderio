@@ -1,7 +1,7 @@
-import { builder } from "@builder.io/sdk";
+import { fetchOneEntry } from "@builder.io/sdk-react-nextjs";
 import { RenderBuilderContent } from "@/components/builder";
 
-builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
+const apiKey = process.env.NEXT_PUBLIC_BUILDER_API_KEY!;
 
 interface PageProps {
   params: {
@@ -12,16 +12,11 @@ interface PageProps {
 export default async function Page(props: PageProps) {
   const urlPath = "/" + (props.params?.page?.join("/") || "");
 
-  const content = await builder
-    .get("page", {
-      userAttributes: { urlPath },
-      prerender: false,
-    })
-    .toPromise();
+  const content = await fetchOneEntry({
+    model: "page",
+    apiKey,
+    userAttributes: { urlPath },
+  });
 
-  return (
-    <>
-      <RenderBuilderContent content={content} model="page" />
-    </>
-  );
+  return <RenderBuilderContent content={content} model="page" apiKey={apiKey} />;
 }
